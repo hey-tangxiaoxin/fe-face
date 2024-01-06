@@ -1,6 +1,6 @@
 const _new = function (fn: Function, ...rest) {
-    const obj = Object.create(fn.prototype)
-    const ret = fn.apply(obj, rest)
+    const obj = Object.create(fn.prototype)  //obj.__proto__ = fn.prototype
+    const ret = fn.apply(obj, rest)  //绑定this
     return ret ? ret : obj
 }
 

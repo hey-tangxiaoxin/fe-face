@@ -1,9 +1,8 @@
 Array.prototype._flat = function (level = 1) {
     const result = [];
-    let _level = level
     this.forEach(item => {
-        if (Array.isArray(item) && (_level > 0 || level === Infinity)) {
-            result.push(...item._flat(--_level))
+        if (Array.isArray(item) && (level > 0 || level === Infinity)) {
+            result.push(...item._flat(--level))
         } else {
             result.push(item)
         }

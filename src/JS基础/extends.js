@@ -43,7 +43,7 @@ B.hello = function () {
   console.log("hello B");
 };
 
-Iextends(A, B);
+inherite(A, B);
 
 const a = new A("tangxiaoxin");
 
