@@ -5,20 +5,18 @@
  * @returns
  */
 const select = (arr) => {
-  var min, index;
+  let min, index;
   console.time("选择排序耗时");
-  for (var i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length; i++) {
     min = arr[i];
     index = i;
-    for (var j = i; j < arr.length; j++) {
+    for (let j = i + 1; j < arr.length; j++) {
       if (arr[j] < min) {
         min = arr[j];
         index = j;
       }
     }
-    const temp = arr[index];
-    arr[index] = arr[i];
-    arr[i] = temp;
+    [arr[index], arr[i]] = [arr[i], arr[index]]
   }
   console.timeEnd("选择排序耗时");
   return arr;

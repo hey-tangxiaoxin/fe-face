@@ -10,14 +10,14 @@ const mergeSort = (arr) => {
   if (arr.length <= 1) {
     return arr;
   }
-  var middle = Math.floor(arr.length / 2);
-  var left = arr.slice(0, middle);
-  var right = arr.slice(middle);
+  const middle = Math.floor(arr.length / 2);
+  const left = arr.slice(0, middle);
+  const right = arr.slice(middle);
   return merge(mergeSort(left), mergeSort(right));
 };
 
 const merge = (left, right) => {
-  var result = [];
+  const result = [];
   while (left.length && right.length) {
     if (left[0] > right[0]) {
       result.push(right.shift());
