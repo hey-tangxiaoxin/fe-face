@@ -1,16 +1,9 @@
-const Iextends = function (child, parent) {
-  //child.__proto__ = parent
-  Object.setPrototypeOf(child, parent);
-  // child.prototype.__proto__ = parent.prototype
-  child.prototype = Object.create(parent.prototype);
-  child.prototype.constructor = child;
-  child.super = parent.prototype;
-  if (parent.prototype.constructor === Object.prototype.constructor) {
-    parent.prototype.constructor = parent;
-  }
-};
-
-const inherite = function (subType, superType) {
+/**
+ * extends实现原理
+ * @param {*} subType 
+ * @param {*} superType 
+ */
+const inherit = function (subType, superType) {
   subType.prototype = Object.create(superType?.prototype, {
     constructor: {
       value: subType,
@@ -43,7 +36,7 @@ B.hello = function () {
   console.log("hello B");
 };
 
-inherite(A, B);
+inherit(A, B);
 
 const a = new A("tangxiaoxin");
 

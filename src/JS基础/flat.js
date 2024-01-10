@@ -1,8 +1,8 @@
-Array.prototype._flat = function (level = 1) {
+Array.prototype.flat = function (level = 1) {
     const result = [];
     this.forEach(item => {
         if (Array.isArray(item) && (level > 0 || level === Infinity)) {
-            result.push(...item._flat(--level))
+            result.push(...item.flat(--level))
         } else {
             result.push(item)
         }
@@ -11,11 +11,11 @@ Array.prototype._flat = function (level = 1) {
 }
 
 const arr = [1, [2, 3, [4, 5, 6]]]
-console.log(arr._flat(Infinity))
+console.log(arr.flat(Infinity))
 
-Array.prototype._flatMap = function (fn) {
+Array.prototype.flatMap = function (fn) {
     if ("function" != typeof fn) throw Error('fn must be a function')
-    return this._flat(Infinity).map(fn)
+    return this.flat(Infinity).map(fn)
 }
 
-console.log(arr._flatMap(x => x * 2))
+console.log(arr.flatMap(x => x * 2))

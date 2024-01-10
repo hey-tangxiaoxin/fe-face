@@ -1,4 +1,4 @@
-Function.prototype._apply = function (context) {
+Function.prototype.apply = function (context) {
     context = context || window
     context.fn = this ?? function () { }
     const args = Array.from(arguments).slice(1)
@@ -18,4 +18,4 @@ const sayName = function () {
     console.log(this.name)
 }
 
-sayName._apply(window)
+sayName.apply(window)
