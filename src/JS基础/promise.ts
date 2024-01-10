@@ -26,7 +26,12 @@ class IPromise<T> {
   reason: any;
   resolveCallbacks: Array<() => any>;
   rejectedCallbacks: Array<() => void>;
-  constructor(executor) {
+  constructor(
+    executor: (
+      resolve: (value: T) => any,
+      reject: (error: string | Error) => void
+    ) => void
+  ) {
     const resolve = (value: T) => {
       if (this.state === PromiseState.pending) return;
       this.state = PromiseState.fulfilled;
@@ -45,9 +50,10 @@ class IPromise<T> {
       reject(error);
     }
   }
-  then(onResove, onReject?) {
+  then(onResolve, onReject?) {
     const nextPromise = new IPromise((resolve, reject) => {
-      onResove = typeof onResove === "function" ? onResove : (value) => value;
+      onResolve =
+        typeof onResolve === "function" ? onResolve : (value) => value;
       onReject =
         typeof onReject === "function"
           ? onReject
@@ -56,7 +62,7 @@ class IPromise<T> {
             };
       if (this.state === PromiseState.fulfilled) {
         this.resolveCallbacks.push(() => {
-          const result = onResove(this.value);
+          const result = onResolve(this.value);
           this.resolvePromise(result, nextPromise, resolve, reject);
         });
       }
@@ -69,7 +75,7 @@ class IPromise<T> {
     });
     return nextPromise;
   }
-  catch(onReject) {
+  catch(onReject: (error: Error) => void) {
     onReject =
       typeof onReject === "function"
         ? onReject
@@ -184,6 +190,7 @@ class IPromise<T> {
   static any(promises) {
     /**
      * 任一promise fulfilled时保持fulfilled，且then回调获取第一个fulfilled promise返回值
+     * 所有promise rejected时，状态变成rejected
      */
     return new IPromise((resolve, reject) => {
       if (isIterableList(promises)) {
@@ -236,10 +243,10 @@ class IPromise<T> {
     return new IPromise((resolve, reject) => {
       try {
         const ret = typeof task === "function" ? task() : task;
-        if(isPromise(ret)){
-            ret.then.call(ret, resolve, reject)
-        }else {
-            resolve(ret);
+        if (isPromise(ret)) {
+          ret.then.call(ret, resolve, reject);
+        } else {
+          resolve(ret);
         }
       } catch (error) {
         reject(error);

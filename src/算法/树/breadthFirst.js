@@ -1,18 +1,30 @@
-const dom = require('../react/vDom')
-const breadth = (dom) => {
-  const queue = []
-  const nodeList = []
-  if (dom) {
-    queue.push(dom)
-    while (queue.length) {
-      const item = queue.shift()
-      nodeList.push(item.key)
-      item.children.forEach((child) => {
-        queue.push(child)
-      })
+/**
+ * 广度优先遍历二叉树
+ * type TreeNode = {
+ *  val: any
+ *  left: TreeNode
+ *  right: TreeNode
+ * }
+ */
+
+/**
+ * 队列实现
+ * @param {*} root 
+ */
+const breadth = (root) => {
+  if(!root) return;
+  const queue = [root]
+  while(queue.length){
+    const levelSize = queue.length;
+    for(let index=0;index<levelSize;index++){
+      const node = queue.shift()
+      console.log(node.val)
+      if(node.left){
+        queue.push(node.left)
+      }
+      if(node.right){
+        queue.push(node.right)
+      }
     }
   }
-  return nodeList.join('=>')
 }
-const { result, depth } = breadth(dom)
-console.log(result, depth)

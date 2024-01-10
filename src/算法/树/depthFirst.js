@@ -1,30 +1,34 @@
-const Dom = require('../react/vDom')
-
-const depth1 = (dom, nodeList) => {
-  nodeList.push(dom.key)
-  dom.children.forEach((element) => {
-    depth1(element, nodeList)
-  })
+/**
+ * 深度优先遍历二叉树 (先序遍历二叉树)
+ * type TreeNode = {
+ *  val: any
+ *  left: TreeNode
+ *  right: TreeNode
+ * }
+ */
+/**
+ * 递归实现
+ */
+const depth = (root) => {
+  if(!root) return;
+  console.log(root.val)
+  depth(root.left)
+  depth(root.right)
 }
-const nodeList = []
-depth1(Dom, nodeList)
-console.log(nodeList.join('=>'))
 
-const depth2 = (node) => {
-  const stack = []
-  const nodes = []
-  if (node) {
-      stack.push(node)
-      while (stack.length) {
-        //每次取最后一个
-          const item = stack.pop()
-          nodes.push(item.key)
-          //判断children的长度
-          while(item.children.length){
-            stack.push(item.children.pop())
-          }
-      }
+/**
+ * 栈实现
+ */
+const depthWithStack = (root) => {
+  const stack = [root]
+  while(stack.length){
+    const node = stack.pop()
+    console.log(node.val)
+    if(node.right) {
+      stack.push(node.right)
+    }
+    if(node.left){
+      stack.push(node.left)
+    }
   }
-  return nodes.join('=>')
 }
-console.log(depth2(Dom));   
