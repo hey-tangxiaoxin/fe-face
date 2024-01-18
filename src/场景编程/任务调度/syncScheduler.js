@@ -1,7 +1,7 @@
 /**
  * 递归实现
- * @param {*} tasks 任务列表
- * @param {*} max 最大并发数
+ * @param {task[]} tasks 任务列表
+ * @param {number} max 最大并发数
  */
 const syncScheduler = (tasks, max, callback) => {
   const len = tasks.length;

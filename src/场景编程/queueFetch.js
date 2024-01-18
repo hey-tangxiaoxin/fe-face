@@ -1,11 +1,8 @@
-const doFetch = (url, timer) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(url);
-    }, timer);
-  });
-};
-
+/**
+ * 控制任务串行执行
+ * @param {task[]} arr 
+ * @returns 
+ */
 const serialFetch = (arr) => {
   return new Promise((resolve, reject) => {
     const ret = [];
@@ -22,6 +19,14 @@ const serialFetch = (arr) => {
         ret.push(res)
         resolve(ret)
       });
+  });
+};
+
+const doFetch = (url, timer) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(url);
+    }, timer);
   });
 };
 serialFetch([

@@ -1,3 +1,8 @@
+/**
+ * 控制任务执行
+ * @param {task[]} tasks 
+ * @returns 
+ */
 const processTask = (tasks) => {
     let isRunning = false;
     let index = 0;

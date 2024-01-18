@@ -1,18 +1,19 @@
 /**
  * Promise.race实现
- * @param {*} tasks
- * @param {*} max
+ * @param {task[]} tasks
+ * @param {number} max
  */
-const asyncScheduler = async function (tasks, max) {
+const asyncScheduler = async function (tasks, max, callback) {
   const len = tasks.length;
   const ret = [];
   const queue = [];
   for (let index = 0; index < len; index++) {
-    const p = Promise.resolve(tasks[index]);
+    const p = Promise.resolve(tasks[index]());
     p.then((res) => {
+      console.log(res)
       queue.splice(queue.indexOf(p), 1);
       if (ret.push(res) === len) {
-        return Promise.resolve(ret);
+        typeof callback === 'function' && callback(ret)
       }
     });
     if (queue.push(p) === max) {
@@ -34,7 +35,9 @@ asyncScheduler(
     { length: 8 },
     (_, v) => () =>
       request({ time: Math.floor(Math.random() * 10) * 1000, name: `task${v}` })
-  )
-).then((res) => {
-  console.log(res);
-});
+  ),
+  3,
+  (ret) => {
+    console.log('------执行完了------\n', ret)
+  }
+);
