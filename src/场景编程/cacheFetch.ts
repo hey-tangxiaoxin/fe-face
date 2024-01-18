@@ -6,7 +6,7 @@ interface RequestCallback {
   onError: (error: any) => void;
 }
 /**
- * 
+ *
  * @returns Function
  */
 const getCacheRequest = function () {
@@ -42,7 +42,11 @@ const getCacheRequest = function () {
     return fetch(url, options)
       .then((res) => {
         if (res.ok) {
-          cacheMap.set(cacheKey, res);  //只缓存成功的请求
+          //只缓存成功的请求
+          statusMap.set(cacheKey, "completed");
+          cacheMap.set(cacheKey, res);
+        } else {
+          statusMap.delete(cacheKey);
         }
         callbackMap.get(cacheKey)?.forEach(({ onSuccess }) => {
           onSuccess(res);
@@ -53,9 +57,10 @@ const getCacheRequest = function () {
         callbackMap.get(cacheKey)?.forEach(({ onError }) => {
           onError(error);
         });
+        statusMap.delete(cacheKey);
+        return error;
       })
       .finally(() => {
-        statusMap.delete(cacheKey);
         callbackMap.delete(cacheKey);
       });
   };
