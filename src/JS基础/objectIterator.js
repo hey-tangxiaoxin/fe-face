@@ -1,5 +1,5 @@
 /**
- * 实现object结构
+ * 实现object解构
  * 如 const [a, b] = {a: 3, b: 4}
  */
 Object.prototype[Symbol.iterator] = function* () {
