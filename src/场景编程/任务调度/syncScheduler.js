@@ -14,7 +14,7 @@ const syncScheduler = (tasks, max, callback) => {
       queue.splice(queue.indexOf(p), 1);
       if (ret.push(res) < len && index + 1 < len) {
         run(tasks[++index]);
-      } else if (typeof callback === "function") {
+      } else if (ret.length === len && typeof callback === "function") {
         callback(ret);
       }
     });
@@ -37,5 +37,9 @@ const request = (task) => {
 syncScheduler(
   Array.from({ length: 8 }, (_, v) =>
    () => request({ time: Math.floor(Math.random() * 10) * 1000, name: `task${v}` })
-  )
+  ),
+  4,
+  (ret) => {
+    console.log(ret)
+  }
 );
