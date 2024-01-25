@@ -1,18 +1,19 @@
+import { depCopy } from "./deepCopy";
 function isObject(val) {
-  return Object.prototype.toString.call(val) === '[object Object]';
+  return Object.prototype.toString.call(val) === "[object Object]";
 }
 /**
  * 对象深度合并
- * @param {Object} target 
- * @param {Object} source 
- * @returns 
+ * @param {Object} target
+ * @param {Object} source
+ * @returns
  */
 function deepMerge(target, source) {
   if (!isObject(target) || !isObject(source)) {
     return source;
   }
-  const targetObject = JSON.parse(JSON.stringify(target));
-  const sourceObject = JSON.parse(JSON.stringify(source));
+  const targetObject = depCopy(target);
+  const sourceObject = depCopy(source);
   Object.keys(sourceObject).forEach((key) => {
     const targetValue = targetObject[key];
     const sourceValue = sourceObject[key];
