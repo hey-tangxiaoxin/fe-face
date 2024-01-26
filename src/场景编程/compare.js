@@ -17,7 +17,7 @@ const walker = function* (str, splitChar) {
 };
 
 /**
- * 两个字符串比较
+ * 两个字符串比较，要求时间复杂度不超过O(n)
  * @param {string} str1
  * @param {string} str2
  * @returns 0 | 1 | -1
