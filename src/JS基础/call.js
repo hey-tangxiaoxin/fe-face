@@ -6,9 +6,11 @@ Function.prototype.call = function (context) {
         throw new TypeError('not function')
     }
     context = context || global;
-    const fn = this;
+    context.fn = this;
     const args = Array.from(arguments).slice(1)
-    return fn(...args)
+    const ret = context.fn(...args)
+    delete context.fn
+    return ret
 }
 
 const window = {

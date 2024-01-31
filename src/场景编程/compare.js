@@ -22,9 +22,18 @@ const walker = function* (str, splitChar) {
  * @param {string} str2
  * @returns 0 | 1 | -1
  */
-const compareStr = (str1, str2) => {
-  const iter1 = walker(str1, "-");
-  const iter2 = walker(str2, "-");
+const compareStr = (str1, str2, splitChar) => {
+  const p1 = str1.split(splitChar).filter(n => !!n);
+  const p2 = str2.split(splitChar).filter(n => !!n);
+  const len = Math.max(p1.length, p2.length);
+  while (p1.length < len) {
+    p1.push(0);
+  }
+  while (p2.length < len) {
+    p2.push(0);
+  }
+  const iter1 = walker(p1.join(splitChar), splitChar);
+  const iter2 = walker(p2.join(splitChar), splitChar);
   while (true) {
     const n1 = iter1.next();
     const n2 = iter2.next();
@@ -42,7 +51,7 @@ const compareStr = (str1, str2) => {
   }
 };
 
-const str1 = "1-23-4-0-10";
+const str1 = "1-23-4-0-10-0-0";
 const str2 = "1-23--4-0-10";
 
-console.log(compareStr(str1, str2));
+console.log(compareStr(str1, str2, '-'));
