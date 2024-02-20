@@ -18,8 +18,7 @@ const syncScheduler = (tasks, max, callback) => {
         callback(ret);
       }
     });
-    queue.push(p);
-    if (queue.length < max) {
+    if (queue.push(p) < max) {
       run(tasks[++index]);
     }
   };

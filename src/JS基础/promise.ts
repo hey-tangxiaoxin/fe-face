@@ -13,7 +13,7 @@ const isPromise = (target) => {
   return target && typeof target.then === "function";
 };
 
-const isIterableList = (promises) => {
+const isIterable = (promises) => {
   return (
     typeof promises[Symbol.iterator] === "function" &&
     typeof promises !== "string"
@@ -145,7 +145,7 @@ class IPromise<T> {
      * 所有promise fulfilled时才会变成fulfilled状态返回数组值，否则变成rejected
      */
     return new IPromise((resolve, reject) => {
-      if (isIterableList(promises)) {
+      if (isIterable(promises)) {
         const list: any = [],
           ret: any = [];
         for (const p of promises) {
@@ -172,7 +172,7 @@ class IPromise<T> {
      * race 状态与第一个改变状态保持一致
      */
     return new IPromise((resolve, reject) => {
-      if (isIterableList(promises)) {
+      if (isIterable(promises)) {
         promises.forEach((p) => {
           IPromise.resolve(p)
             .then((res) => {
@@ -193,7 +193,7 @@ class IPromise<T> {
      * 所有promise rejected时，状态变成rejected
      */
     return new IPromise((resolve, reject) => {
-      if (isIterableList(promises)) {
+      if (isIterable(promises)) {
         const errors: any = [];
         promises.forEach((p, index) => {
           IPromise.resolve(p)
@@ -217,7 +217,7 @@ class IPromise<T> {
      * 不管fulfilled或是rejected，只有所有promise状态改变时，状态才会变成fulfilled，且始终是fulfilled
      */
     return new IPromise((resolve, reject) => {
-      if (isIterableList(promises)) {
+      if (isIterable(promises)) {
         const ret: any = [];
         promises.forEach((p, index) => {
           IPromise.resolve(p)

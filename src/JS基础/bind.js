@@ -6,7 +6,7 @@ Function.prototype.bind = function (context) {
         if (this instanceof F) {
             return new _this(...args, ...arguments)
         } else {
-            return _this.apply(context, args.concat(...arguments))
+            return _this.apply(context, args.concat([...arguments]))
         }
     }
 }

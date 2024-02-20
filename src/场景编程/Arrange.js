@@ -58,4 +58,4 @@ const arrange = () => {
   };
 };
 
-arrange().do('hello do').wait(200).doFirst('hello first').execute()
+arrange().do('hello do').wait(2000).doFirst('hello first').execute()
