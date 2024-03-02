@@ -8,8 +8,8 @@ Function.prototype.call = function (context) {
     context = context || global;
     context.fn = this;
     const args = Array.from(arguments).slice(1)
-    const ret = context.fn(...args)
-    delete context.fn
+    const ret = context.fn(...args);
+    Reflect.deleteProperty(context, 'fn')
     return ret
 }
 
