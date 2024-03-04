@@ -40,10 +40,11 @@ class MemoizeMap {
 
 const memoize = (fn: Function, resolver: Function | undefined) => {
   const memoized = function () {
+    const defaultKey = fn.name ?? fn.toString();
     const key =
-      resolver && typeof resolver === "function"
-        ? resolver.apply(this, arguments)
-        : arguments[0];
+      typeof resolver === "function"
+        ? resolver.apply(this, arguments) ?? defaultKey
+        : defaultKey;
     const cache = memoized.cache;
     if (cache.has(key)) {
       return cache.get(key);
