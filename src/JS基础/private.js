@@ -1,9 +1,9 @@
 function Person(name) {
-    const _name = name
+    this.name = name
     this.getName = function () {
-        console.log(_name)
+        console.log(this.name)
     }
 }
 
 const person = new Person("tangxiaoxin")
-console.log(person.getName())
+person.getName()

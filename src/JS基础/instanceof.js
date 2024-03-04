@@ -1,5 +1,5 @@
 const instanceOf = function (left, right) {
-    const leftVal = left.__proto__
+    const leftVal = Object.getPrototypeOf(left)
     const rightVal = right.prototype
     while (true) {
         if (leftVal === null) {
@@ -8,6 +8,6 @@ const instanceOf = function (left, right) {
         if (leftVal === rightVal) {
             return true
         }
-        leftVal = leftVal.__proto__
+        leftVal = Object.getPrototypeOf(leftVal)
     }
 }

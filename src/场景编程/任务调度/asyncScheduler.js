@@ -9,6 +9,7 @@ const asyncScheduler = async function (tasks, max, callback) {
   const queue = [];
   for (let index = 0; index < len; index++) {
     const p = Promise.resolve(tasks[index]());
+    queue.push(p)
     p.then((res) => {
       console.log(res)
       queue.splice(queue.indexOf(p), 1);
@@ -16,7 +17,7 @@ const asyncScheduler = async function (tasks, max, callback) {
         typeof callback === 'function' && callback(ret)
       }
     });
-    if (queue.push(p) === max) {
+    if (queue.length === max) {
       await Promise.race(queue);
     }
   }
