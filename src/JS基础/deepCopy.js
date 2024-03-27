@@ -1,4 +1,4 @@
-export const depCopy = (target, hash = new WeakMap()) => {
+const depCopy = (target, hash = new WeakMap()) => {
   if (Object.prototype.toString.call(target) !== "[object Object]") {
     throw TypeError("must be object");
   }
@@ -8,7 +8,12 @@ export const depCopy = (target, hash = new WeakMap()) => {
   const ret = {};
   for (const key of Object.keys(target)) {
     const val = target[key];
-    if (typeof val !== "object" || val === null) {
+    if (
+      typeof val !== "object" ||
+      val === null ||
+      val instanceof RegExp ||
+      val instanceof Date
+    ) {
       ret[key] = val;
     } else if (Array.isArray(val)) {
       ret[key] = [...val];
@@ -30,6 +35,7 @@ var test = {
   d: function () {
     console.log("d");
   },
+  reg: /123/,
   e: null,
   f: undefined,
   g: Boolean(true),
@@ -43,4 +49,9 @@ var test = {
 test.self = test; //循环引用
 
 const ret = depCopy(test);
-console.log(ret);
+console.dir(ret);
+
+/**
+ * JSON.parse(JSON.stringify())
+ * 弊端：1. undefined 和函数会被丢弃；2. 日期对象会被转换成字符串格式；3. 正则表达式会被转换成空对象
+ */
