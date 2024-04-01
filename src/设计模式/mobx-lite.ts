@@ -1,3 +1,6 @@
+/**
+ * Mobx基本实现原理
+ */
 class MobxLite<T extends Object> {
   private observerList: Array<Function> = [];
   state: T;

@@ -50,9 +50,19 @@ const subscription = observer.subscribe(() => ({
   },
 }));
 
+const subscription2 = observer.subscribe(() => ({
+  next(value) {
+    console.log("2", value);
+  },
+}));
+
 observer.next("hello");
 
 setTimeout(() => {
   observer.next("world");
   subscription.unsubscribe();
 }, 2000);
+
+setTimeout(() => {
+  observer.next("123");
+}, 3000);
