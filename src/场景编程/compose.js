@@ -22,4 +22,9 @@ const task3 = () => request(3000, "task3");
 
 const mainAsync = composeAsync(task1, task2, task3);
 
-mainAsync().then(res => console.log(res))
+mainAsync().then((res) => console.log(res));
+
+const pipe =
+  (...fns) =>
+  (args) =>
+    fns.reduce((pre, fn) => fn(pre), args);
