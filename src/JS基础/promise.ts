@@ -58,8 +58,8 @@ class IPromise<T> {
         typeof onReject === "function"
           ? onReject
           : (error) => {
-              throw error;
-            };
+            throw error;
+          };
       if (this.state === PromiseState.fulfilled) {
         this.resolveCallbacks.push(() => {
           const result = onResolve(this.value);
@@ -80,8 +80,8 @@ class IPromise<T> {
       typeof onReject === "function"
         ? onReject
         : (error) => {
-            throw error;
-          };
+          throw error;
+        };
     return this.then(null, onReject);
   }
   finally(fn: Function) {
@@ -128,16 +128,17 @@ class IPromise<T> {
     }
   }
   static resolve(p) {
-    return new IPromise((resolve, reject) => {
-      if (p instanceof IPromise) {
-        return p.then(resolve, reject);
-      }
-      resolve(p);
-    });
+    if (p instanceof IPromise) return p;
+    if (isPromise(p)) {
+      return new IPromise((resolve, reject) => {
+        p.then(resolve, reject)
+      })
+    }
+    return new IPromise((resolve) => resolve(p))
   }
-  static reject(p) {
+  static reject(reason) {
     return new IPromise((resolve, reject) => {
-      reject(p);
+      reject(reason);
     });
   }
   static all(promises) {
