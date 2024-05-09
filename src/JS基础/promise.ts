@@ -21,11 +21,11 @@ const isIterable = (promises) => {
 };
 
 class IPromise<T> {
-  state: PromiseState;
+  state: PromiseState = PromiseState.pending;
   value: T;
   reason: any;
-  resolveCallbacks: Array<() => any>;
-  rejectedCallbacks: Array<() => void>;
+  resolveCallbacks: Array<() => any> = [];
+  rejectedCallbacks: Array<() => void> = [];
   constructor(
     executor: (
       resolve: (value: T) => any,
@@ -33,13 +33,11 @@ class IPromise<T> {
     ) => void
   ) {
     const resolve = (value: T) => {
-      if (this.state === PromiseState.pending) return;
       this.state = PromiseState.fulfilled;
       this.value = value;
       this.resolveCallbacks.forEach((fn) => fn());
     };
     const reject = (error: any) => {
-      if (this.state === PromiseState.pending) return;
       this.state = PromiseState.rejected;
       this.reason = error;
       this.rejectedCallbacks.forEach((fn) => fn());
@@ -58,20 +56,16 @@ class IPromise<T> {
         typeof onReject === "function"
           ? onReject
           : (error) => {
-            throw error;
-          };
-      if (this.state === PromiseState.fulfilled) {
-        this.resolveCallbacks.push(() => {
-          const result = onResolve(this.value);
-          this.resolvePromise(result, nextPromise, resolve, reject);
-        });
-      }
-      if (this.state === PromiseState.rejected) {
-        this.rejectedCallbacks.push(() => {
-          const result = onReject(this.reason);
-          this.resolvePromise(result, nextPromise, resolve, reject);
-        });
-      }
+              throw error;
+            };
+      this.resolveCallbacks.push(() => {
+        const result = onResolve(this.value);
+        this.resolvePromise(result, nextPromise, resolve, reject);
+      });
+      this.rejectedCallbacks.push(() => {
+        const result = onReject(this.reason);
+        this.resolvePromise(result, nextPromise, resolve, reject);
+      });
     });
     return nextPromise;
   }
@@ -80,8 +74,8 @@ class IPromise<T> {
       typeof onReject === "function"
         ? onReject
         : (error) => {
-          throw error;
-        };
+            throw error;
+          };
     return this.then(null, onReject);
   }
   finally(fn: Function) {
@@ -131,10 +125,10 @@ class IPromise<T> {
     if (p instanceof IPromise) return p;
     if (isPromise(p)) {
       return new IPromise((resolve, reject) => {
-        p.then(resolve, reject)
-      })
+        p.then(resolve, reject);
+      });
     }
-    return new IPromise((resolve) => resolve(p))
+    return new IPromise((resolve) => resolve(p));
   }
   static reject(reason) {
     return new IPromise((resolve, reject) => {
@@ -204,7 +198,7 @@ class IPromise<T> {
             .catch((error) => {
               errors[index] = error;
               if (errors.length === promises.length) {
-                reject(new AggregateError(errors));
+                reject(errors);
               }
             });
         });
@@ -255,3 +249,13 @@ class IPromise<T> {
     });
   }
 }
+
+const p = new IPromise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(1);
+  }, 4000);
+});
+
+p.then((res) => {
+  console.log(res);
+});
