@@ -148,14 +148,10 @@ class IPromise<T> {
         }
         if (list.length === 0) resolve(list);
         list.forEach((p, index) => {
-          IPromise.resolve(p)
-            .then((res) => {
-              ret[index] = res;
-              if (ret.length === list.length) resolve(ret);
-            })
-            .catch((err) => {
-              reject(err);
-            });
+          IPromise.resolve(p).then((res) => {
+            ret[index] = res;
+            if (ret.length === list.length) resolve(ret);
+          }, reject);
         });
       } else {
         reject("Argument is not iterable");
@@ -169,13 +165,7 @@ class IPromise<T> {
     return new IPromise((resolve, reject) => {
       if (isIterable(promises)) {
         promises.forEach((p) => {
-          IPromise.resolve(p)
-            .then((res) => {
-              resolve(res);
-            })
-            .catch((error) => {
-              reject(error);
-            });
+          IPromise.resolve(p).then(resolve, reject);
         });
       } else {
         reject("Argument is not iterable");
@@ -192,9 +182,7 @@ class IPromise<T> {
         const errors: any = [];
         promises.forEach((p, index) => {
           IPromise.resolve(p)
-            .then((res) => {
-              resolve(res);
-            })
+            .then(resolve)
             .catch((error) => {
               errors[index] = error;
               if (errors.length === promises.length) {

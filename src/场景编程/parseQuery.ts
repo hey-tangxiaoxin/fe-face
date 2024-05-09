@@ -6,10 +6,8 @@
 const parseQuery = (src: string) => {
   const url = new URL(src);
   const query = {};
-  if (url.searchParams.size > 0) {
-    for (const [key, value] of url.searchParams.entries()) {
-      query[key] = value;
-    }
-  }
+  url.searchParams.forEach((value, key) => {
+    query[key] = value;
+  });
   return query;
 };

@@ -5,19 +5,14 @@
 const getRequestIdleCallback = () => {
   if (window.requestIdleCallback) return window.requestIdleCallback;
   if (window.MessageChannel) {
-    const tasks = [];
     const channel = new MessageChannel();
     const { port1, port2 } = channel;
     port1.onmessage = ({ data }) => {
-      const task = tasks.shift();
-      if (!task) {
-        return;
-      }
-      idleCall(task, data.start);
+      const { task, start } = data;
+      idleCall(task, start);
     };
     return (task) => {
-      tasks.push(task);
-      port2.postMessage({ start: Date.now() });
+      port2.postMessage({ task, start: Date.now() });
     };
   }
   return (task) => setTimeout(idleCall, 0, task, Date.now());
