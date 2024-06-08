@@ -67,4 +67,4 @@ class Bonus {
 
 const bonus = new Bonus()
 bonus.setStrategy(new StrategyS(10000))
-bonus.getBonus()
+console.log(bonus.getBonus())

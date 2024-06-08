@@ -1,4 +1,7 @@
 class MiddleWare {
+  private current = 0;
+  private middleWares = [];
+  private isRunning = false;
   constructor() {
     this.isRunning = false;
     this.middleWares = [];
@@ -10,9 +13,9 @@ class MiddleWare {
   async run() {
     if (this.isRunning) return;
     this.isRunning = true;
-    await this.#runMiddleWare();
+    await this.runMiddleWare();
   }
-  async #runMiddleWare() {
+  private async runMiddleWare() {
     if (this.current >= this.middleWares.length) {
       this.isRunning = false;
       this.current = 0;
@@ -21,14 +24,14 @@ class MiddleWare {
     }
     const middleWare = this.middleWares.shift();
     const pre = this.current;
-    await middleWare(this.#next.bind(this));
+    await middleWare(this.next.bind(this));
     const current = this.current;
     if (pre === current) {
-      this.#next();
+      this.next();
     }
   }
-  async #next() {
+  private async next() {
     this.current++;
-    await this.#runMiddleWare();
+    await this.runMiddleWare();
   }
 }

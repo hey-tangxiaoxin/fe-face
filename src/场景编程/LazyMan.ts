@@ -1,4 +1,5 @@
 class LazyClass {
+  tasks: Array<Function>
   constructor(name) {
     console.log(`i am ${name}`);
     this.tasks = [];
@@ -6,7 +7,7 @@ class LazyClass {
       this.next()
     }, 0)
   }
-  #asyncTask(time) {
+  private asyncTask(time) {
     return new Promise((resolve) => {
       setTimeout(resolve, time)
     })
@@ -20,7 +21,7 @@ class LazyClass {
     return this
   }
   sleep(time) {
-    const task = this.#asyncTask(time)
+    const task = this.asyncTask(time)
     const fn = () => task.then(() => {
       console.log(`after sleep ${time}`);
       this.next()
@@ -29,7 +30,7 @@ class LazyClass {
     return this
   }
   sleepFirst(time) {
-    const task = this.#asyncTask(time)
+    const task = this.asyncTask(time)
     const fn = () => task.then(() => {
       console.log(`first sleep ${time}`)
       this.next()
