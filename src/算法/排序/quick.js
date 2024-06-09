@@ -15,11 +15,11 @@ const quickly = (arr) => {
   arr.forEach((item, index) => {
     if (item < pivot) {
       left.push(item);
-    }else{
-      right.push(item)
+    } else {
+      right.push(item);
     }
   });
-  return quickly(left).concat([pivot], quickly(right))
+  return quickly(left).concat([pivot], quickly(right));
 };
 
 const arr = [3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48];

@@ -16,7 +16,7 @@ const select = (arr) => {
         index = j;
       }
     }
-    [arr[index], arr[i]] = [arr[i], arr[index]]
+    [arr[index], arr[i]] = [arr[i], arr[index]];
   }
   console.timeEnd("选择排序耗时");
   return arr;
