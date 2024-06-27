@@ -12,7 +12,8 @@ const depCopy = (target, hash = new WeakMap()) => {
       typeof val !== "object" ||
       val === null ||
       val instanceof RegExp ||
-      val instanceof Date
+      val instanceof Date ||
+      val instanceof Function
     ) {
       ret[key] = val;
     } else if (Array.isArray(val)) {
