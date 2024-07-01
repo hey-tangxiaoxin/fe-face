@@ -1,4 +1,4 @@
-const depCopy = (target, hash = new WeakMap()) => {
+const deepCopy = (target, hash = new WeakMap()) => {
   if (Object.prototype.toString.call(target) !== "[object Object]") {
     throw TypeError("must be object");
   }
@@ -24,7 +24,7 @@ const depCopy = (target, hash = new WeakMap()) => {
       ret[key] = new Map([...val]);
     } else {
       hash.set(val, val);
-      ret[key] = depCopy(val, hash);
+      ret[key] = deepCopy(val, hash);
     }
   }
   return ret;
@@ -49,7 +49,7 @@ var test = {
 };
 test.self = test; //循环引用
 
-const ret = depCopy(test);
+const ret = deepCopy(test);
 console.dir(ret);
 
 /**
