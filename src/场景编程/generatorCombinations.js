@@ -1,14 +1,19 @@
-const combinations = [];
-const generatorCombinations = (arr, path = []) => {
-  if (path.length === list.length) {
-    return combinations.push(path.slice());
+
+const generatorCombinations = (list) => {
+  const combinations = [];
+  const breakTracking = (arr, path = []) => {
+    if (path.length === list.length) {
+      return combinations.push(path.slice());
+    }
+    const [first, ...rest] = arr;
+    for (const value of first) {
+      path.push(value);
+      breakTracking(rest, path);
+      path.pop();
+    }
   }
-  const [first, ...rest] = arr;
-  for (const value of first) {
-    path.push(value);
-    generatorCombinations(rest, path);
-    path.pop();
-  }
+  breakTracking(list)
+  return combinations
 };
 
 const list = [
@@ -18,5 +23,4 @@ const list = [
   ["5.5", "6.1", "6.2", "6.3", "6.4", "6.5"],
 ];
 
-generatorCombinations(list);
-console.log(combinations);
+console.log(generatorCombinations(list));
