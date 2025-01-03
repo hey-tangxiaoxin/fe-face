@@ -1,4 +1,4 @@
-import { depCopy } from "./deepCopy";
+import { deepCopy } from "./deepCopy.js";
 function isObject(val) {
   return Object.prototype.toString.call(val) === "[object Object]";
 }
@@ -12,8 +12,8 @@ function deepMerge(target, source) {
   if (!isObject(target) || !isObject(source)) {
     return source;
   }
-  const targetObject = depCopy(target);
-  const sourceObject = depCopy(source);
+  const targetObject = deepCopy(target);
+  const sourceObject = deepCopy(source);
   Object.keys(sourceObject).forEach((key) => {
     const targetValue = targetObject[key];
     const sourceValue = sourceObject[key];
@@ -33,6 +33,13 @@ const countries = {
     capital: "Washington D.C.",
     emoji: "🇺🇸",
     population: 331000000,
+    area: {
+      width: 100,
+      height: 200,
+      getArea() {
+        return this.width * this.height;
+      },
+    }
   },
 };
 
@@ -40,6 +47,21 @@ const countriesDetails = {
   USA: {
     language: "English",
     currency: "USD",
+    emoji: "🇩🇪",
+    area: {
+      width: undefined,
+      height: 100,
+      getArea() {
+        return this.width * this.height;
+      },
+    }
+  },
+  China: {
+    capital: "Beijing",
+    emoji: "🇨🇳",
+    language: "Chinese",
+    currency: "CNY",
+    population: 1400000000,
   },
   Germany: {
     capital: "Berlin",

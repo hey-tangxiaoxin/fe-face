@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * @param {多级分类、查找所有不同组合} list 
+ * @returns 
+ */
 const generatorCombinations = (list) => {
   const combinations = [];
   const breakTracking = (arr, path = []) => {

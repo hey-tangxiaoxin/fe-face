@@ -1,4 +1,4 @@
-const deepCopy = (target, hash = new WeakMap()) => {
+export const deepCopy = (target, hash = new WeakMap()) => {
   if (Object.prototype.toString.call(target) !== "[object Object]") {
     throw TypeError("must be object");
   }
@@ -47,7 +47,8 @@ var test = {
     },
   },
 };
-test.self = test; //循环引用
+
+test.h.m.x = test;
 
 const ret = deepCopy(test);
 console.dir(ret);
