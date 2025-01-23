@@ -6,7 +6,7 @@ class MobxLite<T extends Object> {
   state: T;
   constructor(state: T) {
     this.state = new Proxy(state, {
-      set: (target, key, value, proxy) => {
+      set(target, key, value, proxy) {
         const result = Reflect.set(target, key, value, proxy);
         this.observerList.forEach((fn) => {
           fn();

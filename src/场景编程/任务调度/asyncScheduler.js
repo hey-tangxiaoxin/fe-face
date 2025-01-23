@@ -7,14 +7,17 @@ const asyncScheduler = async function (tasks, max, callback) {
   const len = tasks.length;
   const ret = [];
   const queue = [];
+  console.time("执行时间");
   for (let index = 0; index < len; index++) {
     const p = Promise.resolve(tasks[index]());
-    queue.push(p)
+    const i = index;
+    queue.push(p);
     p.then((res) => {
-      console.log(res)
       queue.splice(queue.indexOf(p), 1);
-      if (ret.push(res) === len) {
-        typeof callback === 'function' && callback(ret)
+      ret[i] = res;
+      if (ret.length === len) {
+        typeof callback === "function" && callback(ret);
+        console.timeEnd("执行时间");
       }
     });
     if (queue.length === max) {
@@ -39,6 +42,6 @@ asyncScheduler(
   ),
   3,
   (ret) => {
-    console.log('------执行完了------\n', ret)
+    console.log("------执行完了------\n", ret);
   }
 );

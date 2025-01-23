@@ -5,8 +5,9 @@
  */
 const generatorCombinations = (list) => {
   const combinations = [];
+  const len = list.length;
   const breakTracking = (arr, path = []) => {
-    if (path.length === list.length) {
+    if (path.length === len) {
       return combinations.push(path.slice());
     }
     const [first, ...rest] = arr;

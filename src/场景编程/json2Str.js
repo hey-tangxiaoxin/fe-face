@@ -1,6 +1,6 @@
 const getType = (target) => Object.prototype.toString.call(target);
 /**
- * json转字符串，解决JSON.stringify()部分属性丢失问题
+ * json转字符串，解决JSON.stringify()部分属性丢失问题，undefined、function丢失，Date转字符串
  * @param {Object} obj
  * @returns
  */
@@ -33,6 +33,9 @@ const obj = {
   ]),
   date: new Date(),
   set: new Set([1, 2, 3]),
+  o: {
+    name: "123",
+  }
 };
 
-json2str(obj);
+console.log(json2str(obj));

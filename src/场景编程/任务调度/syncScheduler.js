@@ -9,10 +9,12 @@ const syncScheduler = (tasks, max, callback) => {
   const ret = [];
   let index = 0;
   const run = (task) => {
+    const i = index
     const p = Promise.resolve(task());
     p.then((res) => {
       queue.splice(queue.indexOf(p), 1);
-      if (ret.push(res) < len && index + 1 < len) {
+      ret[i] = res;
+      if (ret.length < len && index + 1 < len) {
         run(tasks[++index]);
       } else if (ret.length === len && typeof callback === "function") {
         callback(ret);

@@ -14,8 +14,7 @@ const serialFetch = (arr) => {
             ret.push(res);
             return cur;
           }),
-      )
-      .then((res) => {
+      ).then((res) => {
         ret.push(res)
         resolve(ret)
       });
