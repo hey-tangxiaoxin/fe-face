@@ -7,25 +7,22 @@ class MiddleWare {
     this.middleWares = [];
     this.current = 0;
   }
-  add(middleWare) {
+  public add(middleWare) {
     this.middleWares.push(middleWare);
+    return this;
   }
-  async run() {
+  public async start() {
     if (this.isRunning) return;
     this.isRunning = true;
     await this.runMiddleWare();
   }
   private async runMiddleWare() {
-    if (this.current >= this.middleWares.length) {
-      this.isRunning = false;
-      this.current = 0;
-      this.middleWares = [];
-      return;
-    }
     const middleWare = this.middleWares.shift();
+    if (!middleWare) return;
     const pre = this.current;
     await middleWare(this.next.bind(this));
     const current = this.current;
+    // 如果middleware没有执行 next，自动执行下一个
     if (pre === current) {
       this.next();
     }
@@ -35,3 +32,25 @@ class MiddleWare {
     await this.runMiddleWare();
   }
 }
+
+const mw = new MiddleWare();
+
+mw.add(async (next) => {
+  console.log("1开始执行");
+  next();
+  console.log("1开始结束");
+});
+
+mw.add(async (next) => {
+  console.log("2开始执行");
+  next();
+  console.log("2开始结束");
+});
+
+mw.add(async (next) => {
+  console.log("3开始执行");
+  next();
+  console.log("3开始结束");
+});
+
+mw.start();

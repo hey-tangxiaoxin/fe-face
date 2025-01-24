@@ -1,4 +1,4 @@
-const nextTick = (fn: Function) => {
+const nextTick = (fn: VoidFunction) => {
   if (typeof fn !== "function") {
     throw TypeError("argument must be a function");
   }

@@ -2,8 +2,10 @@
   "name": "fe-face",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "license": "MIT",
+  "scripts": {
+    "runTs": "ts-node -T src/base/deferred.ts"
+  },
   "dependencies": {
     "@astii/compare-version": "^1.0.4",
     "@astii/expression-sandbox": "^1.0.6",
@@ -12,6 +14,6 @@
   "devDependencies": {
     "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",
-    "@types/node": "^20.10.4"
+    "@types/node": "^22.10.10"
   }
 }

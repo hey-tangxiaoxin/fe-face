@@ -1,4 +1,4 @@
-class LRU<T extends any> {
+class LRU<T extends unknown> {
     maxSize: number
     dataMap: Map<string, T>
     constructor(maxSize: number) {

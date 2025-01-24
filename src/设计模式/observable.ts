@@ -1,10 +1,15 @@
 /**
- * 观察者模式：所有观察者实现统一的API，观察内容发生改变时，调度所有观察者的API执行更新
- * 调度对象：观察者模式的调度发生在具体目标内，如Observable
+ * 观察者模式：一种行为设计模式，允许一个被观察对象（Subject）订阅另一个（或多个）观察者（Observer）的事件，当被观察者发生变化时，观察者会收到通知并执行相应的操作
+ * 被观察者和观察者之间存在一对多的依赖关系，当被观察者发生变化时，所有观察者都会收到通知并执行相应的操作
+ * 组成：
+ *  Subject被观察者：被观察者是一个对象，它维护了一个观察者列表，当被观察者发生变化时，会通知所有观察者
+ *  Observer观察者：观察者是一个对象，它实现了一个接口，当被观察者发生变化时，会调用观察者的接口
+ * 特点：1. 所有观察者实现统一的API，观察内容发生改变时，调度所有观察者的对应API执行更新
+ *      2. 观察者模式的调度发生在被观察目标内部，如Observable，Subject
  */
 type Observer<T = any> = {
   next: (value?: T) => void;
-  error?: (err?: any) => void;
+  error?: (err?: Error) => void;
   complete?: () => void;
 };
 
@@ -13,7 +18,7 @@ class Observable<T = any> {
   constructor() {
     this.observerList = [];
   }
-  subscribe(observer: Observer | (() => Observer)) {
+  public subscribe(observer: Observer | (() => Observer)) {
     if (typeof observer === "function") {
       observer = observer();
     }
@@ -26,12 +31,12 @@ class Observable<T = any> {
       },
     };
   }
-  next(value: T) {
+  public next(value: T) {
     this.observerList.forEach((observer) => {
       observer.next(value);
     });
   }
-  error(error: any) {
+ public error(error: any) {
     this.observerList.forEach((observer) => {
       observer.error!(error);
     });
