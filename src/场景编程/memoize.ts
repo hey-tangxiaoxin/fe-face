@@ -38,7 +38,7 @@ class MemoizeMap {
   }
 }
 
-const memoize = (fn: Function, resolver: Function | undefined) => {
+const memoize = (fn: Function, resolver?: Function) => {
   const memoized = function () {
     const defaultKey = fn.name ?? fn.toString();
     const key =
