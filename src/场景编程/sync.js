@@ -1,4 +1,4 @@
-const request = (time) => {
+let request = (time) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve({ name: "ks" });
@@ -6,12 +6,9 @@ const request = (time) => {
   });
 };
 
-const m1 = async () => {
-  return await request(1000);
-};
-
-const m2 = async () => {
-  return await m1();
+const m1 = () => {
+  console.log("----m1执行----");
+  return request(2000);
 };
 
 const syncExec = (task) => {
@@ -20,40 +17,40 @@ const syncExec = (task) => {
     value: null,
     reason: null,
   };
-  const fn = () => {
-    console.log("----fn-----");
+
+  const rawRequest = request;
+  request = (time) => {
     if (cache.state === "fulfilled") {
       return cache.value;
     }
     if (cache.state === "rejected") {
       throw cache.reason;
     }
-    const p = task().then(
-      (res) => {
+    const p = rawRequest(time)
+      .then((res) => {
         cache.state = "fulfilled";
         cache.value = res;
-      },
-      (error) => {
+      })
+      .catch((error) => {
         cache.state = "rejected";
         cache.reason = error;
-      }
-    );
+      });
     throw p;
   };
   try {
     task();
   } catch (error) {
-    console.log("finally", error instanceof Promise);
     if (error instanceof Promise) {
       error.finally(() => {
-        return fn();
+        task();
+        request = rawRequest;
       });
     }
   }
 };
 
 const main = () => {
-  const res = m2();
+  const res = m1();
   console.log("----结果----", res);
 };
 
