@@ -3,43 +3,47 @@
  * @param {*} deps
  * @returns
  */
-function checkCyclicRequire(deps) {
-  const ret = Object.entries(deps).map(([jsPath]) => {
-    return checkCyclic(jsPath, [], deps);
-  });
-  return ret
-    .flat(1)
-    .filter(([flag]) => flag === "cyclic")
-    .map(([flag, ...path]) => path.join("->"))
-    .join("\n");
+function hasCycle(graph) {
+  const visited = new Set();
+  const stack = new Set();
 
-  function checkCyclic(jsPath, depsChains, deps) {
-    if (depsChains.includes(jsPath)) {
-      return [["cyclic", ...depsChains, jsPath]];
-    } else if (jsPath in deps) {
-      return deps[jsPath].deps
-        .map((path) => checkCyclic(path, [...depsChains, jsPath], deps))
-        .flat(1);
-    } else {
-      return [["noCyclic", ...depsChains, jsPath]];
+  function dfs(node) {
+    if (stack.has(node)) {
+      return true; // 检测到循环
+    }
+    if (visited.has(node)) {
+      return false; // 已经访问过的节点
+    }
+
+    visited.add(node);
+    stack.add(node);
+
+    for (let neighbor of graph[node]) {
+      if (dfs(neighbor)) {
+        return true;
+      }
+    }
+
+    stack.delete(node);
+    return false;
+  }
+
+  for (let node in graph) {
+    if (dfs(node)) {
+      return true;
     }
   }
+
+  return false;
 }
 
-// 测试用例
-let deps = {
-  "a.js": {
-    deps: ["b.js", "e.js"],
-  },
-  "b.js": {
-    deps: ["c.js"],
-  },
-  "c.js": {
-    deps: ["d.js"],
-  },
-  "d.js": {
-    deps: ["a.js"],
-  },
+// 示例用法
+const graph = {
+  'A': ['B'],
+  'B': ['C'],
+  'C': ['A'], // 这里有一个循环依赖
+  'D': ['E'],
+  'E': []
 };
-var res = checkCyclicRequire(deps);
-console.log(res);
+
+console.log(hasCycle(graph)); // 输出: true
