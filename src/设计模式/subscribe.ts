@@ -51,7 +51,12 @@ class EventBus {
   }
 }
 
-const eventBus = new EventBus();
+
+import { singleton } from './singleton'
+
+const SingleEventBus = singleton(EventBus);
+
+const eventBus = new SingleEventBus();
 
 // 定义两个回调函数
 const f1 = (...args) => {
@@ -61,6 +66,8 @@ const f1 = (...args) => {
 const f2 = () => {
   console.log("f2 执行成功!");
 };
+
+
 
 // 注册事件
 eventBus

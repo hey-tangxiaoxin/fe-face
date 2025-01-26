@@ -1,4 +1,6 @@
-const singleton = (className) => {
+type Constructor<T = {}> = new (...args: any[]) => T;
+
+const singleton = <T>(className: Constructor<T>): Constructor<T> => {
   let ins = null;
   return new Proxy(className, {
     construct(target, arg) {
@@ -9,6 +11,8 @@ const singleton = (className) => {
     },
   });
 };
+
+export { singleton };
 
 class Logger {
   log(message) {
