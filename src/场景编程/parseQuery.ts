@@ -5,9 +5,11 @@
  */
 const parseQuery = (src: string) => {
   const url = new URL(src);
-  const query = {};
-  url.searchParams.forEach((value, key) => {
-    query[key] = value;
-  });
-  return query;
+  return Array.from(url.searchParams.entries()).reduce(
+    (query, [key, value]) => {
+      query[key] = value;
+      return query;
+    },
+    {}
+  );
 };

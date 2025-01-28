@@ -1,7 +1,7 @@
 /**
  * 二叉树最大深度
- * @param {*} root 
- * @returns 
+ * @param {*} root
+ * @returns
  * link：https://leetcode.cn/problems/maximum-depth-of-binary-tree/submissions/497390905/
  */
 const maxDepth = (root) => {

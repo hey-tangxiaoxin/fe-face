@@ -9,22 +9,22 @@
 
 /**
  * 队列实现
- * @param {*} root 
+ * @param {*} root
  */
 const breadth = (root) => {
-  if(!root) return;
-  const queue = [root]
-  while(queue.length){
+  if (!root) return;
+  const queue = [root];
+  while (queue.length) {
     const levelSize = queue.length;
-    for(let index=0;index<levelSize;index++){
-      const node = queue.shift()
-      console.log(node.val)
-      if(node.left){
-        queue.push(node.left)
+    for (let index = 0; index < levelSize; index++) {
+      const node = queue.shift();
+      console.log(node.val);
+      if (node.left) {
+        queue.push(node.left);
       }
-      if(node.right){
-        queue.push(node.right)
+      if (node.right) {
+        queue.push(node.right);
       }
     }
   }
-}
+};

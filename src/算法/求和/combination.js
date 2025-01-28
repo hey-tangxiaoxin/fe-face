@@ -1,4 +1,9 @@
-//排列组合求值
+/**
+ * 总和等于目标值的所有排列
+ * @param {Number} candidates
+ * @param {Number} target
+ * @returns {Number[][]}
+ */
 const combination = (candidates = [], target = 0) => {
   if (!candidates.length) return [];
   const ret = [];
