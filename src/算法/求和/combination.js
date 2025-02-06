@@ -1,5 +1,5 @@
 /**
- * 总和等于目标值的所有排列
+ * 组合总和，找出所有和为 target 的组合
  * @param {Number} candidates
  * @param {Number} target
  * @returns {Number[][]}
@@ -11,6 +11,7 @@ const combination = (candidates = [], target = 0) => {
     if (sum > target) return;
     if (sum === target) return ret.push(path.slice());
     for (let i = index; i < candidates.length; i++) {
+      // 去重
       if (i - 1 >= index && candidates[i - 1] == candidates[i]) continue;
       path.push(candidates[i]);
       sum += candidates[i];
