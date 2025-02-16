@@ -12,10 +12,9 @@ const processTask = (tasks) => {
       return new Promise(async (resolve, reject) => {
         if (isRunning) return;
         isRunning = true;
-        while (index < tasks.length) {
+        while (index++ < tasks.length) {
           const ret = await tasks[index]();
           result.push(ret);
-          index++;
           if (!isRunning) return;
         }
         isRunning = false;

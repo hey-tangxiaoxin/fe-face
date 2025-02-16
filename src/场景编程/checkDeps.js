@@ -18,7 +18,7 @@ function hasCycle(graph) {
     visited.add(node);
     stack.add(node);
 
-    for (let neighbor of graph[node]) {
+    for (const neighbor of graph[node]) {
       if (dfs(neighbor)) {
         return true;
       }
@@ -28,7 +28,7 @@ function hasCycle(graph) {
     return false;
   }
 
-  for (let node in graph) {
+  for (const node in graph) {
     if (dfs(node)) {
       return true;
     }

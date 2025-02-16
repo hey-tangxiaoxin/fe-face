@@ -41,3 +41,5 @@ const reverseBetween = (head, left, right) => {
   leftNode.next = nextNode;
   return dummy.next;
 };
+
+export { revertLink };
