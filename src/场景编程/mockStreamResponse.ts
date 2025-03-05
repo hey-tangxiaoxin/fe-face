@@ -1,5 +1,5 @@
 type MockStreamResponseOptions = {
-  data: string;
+  message: string;
   delay?: number;
   random?: boolean;
 };
@@ -22,7 +22,7 @@ class MockStreamResponse {
   }
   private getRandomDelay() {
     if (!this.options.random) return this.options.delay;
-    return (Math.floor(Math.random() * 10) + 1) * this.options.delay;
+    return Math.floor(Math.random() * 10) * this.options.delay;
   }
 
   private getRandomChinese(): string {
@@ -34,12 +34,12 @@ class MockStreamResponse {
   }
 
   private write = () => {
-    if (this.options.data.length === 0) {
+    if (this.options.message.length === 0) {
       this.controller.close();
       return;
     }
-    const chunk = this.options.data.slice(0, 1);
-    this.options.data = this.options.data.slice(1);
+    const chunk = this.options.message.slice(0, 1);
+    this.options.message = this.options.message.slice(1);
     this.controller.enqueue(new TextEncoder().encode(chunk));
     setTimeout(this.write, this.getRandomDelay());
   };
@@ -51,7 +51,7 @@ class MockStreamResponse {
 }
 
 const mockStreamResponse = new MockStreamResponse({
-  data: "这是一段模拟的流式字符串数据。本次会话传入了10条消息，回复内容为：",
+  message: "这是一段模拟的流式字符串数据。本次会话传入了10条消息，回复内容为：",
   random: true,
 });
 
