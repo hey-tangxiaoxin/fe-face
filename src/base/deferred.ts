@@ -1,4 +1,4 @@
-class Deferred<T> {
+class Deferred<T = void> {
   promise: Promise<T>;
   resolve: (value: PromiseLike<T> | T) => void;
   reject: (reason: any) => void;
@@ -10,7 +10,17 @@ class Deferred<T> {
   }
 }
 
-const deferred = new Deferred<void>();
+class Deferred2<T = void> {
+  constructor() {
+    return Promise.withResolvers<T>();
+  }
+}
+
+const deferred = new Deferred();
+
+const deferred2 = new Deferred2();
+
+console.log(deferred2);
 
 const task1 = async () => {
   await deferred.promise;
